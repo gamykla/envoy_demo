@@ -1,0 +1,33 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: envoy-config
+  namespace: demo-app
+data:
+  # EntraID Configuration
+  ENTRAID_ISSUER: "https://login.microsoftonline.com/YOUR_TENANT_ID/v2.0"
+  ENTRAID_AUDIENCE: "YOUR_SERVICE_PRINCIPAL_CLIENT_ID"
+  ENTRAID_JWKS_URI: "https://login.microsoftonline.com/YOUR_TENANT_ID/discovery/v2.0/keys"
+  ENTRAID_TOKEN_ENDPOINT: "https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/token"
+  ENTRAID_AUTH_ENDPOINT: "https://login.microsoftonline.com/YOUR_TENANT_ID/oauth2/v2.0/authorize"
+
+  # OAuth2 Client Configuration for downstream services
+  OAUTH2_CLIENT_ID: "YOUR_OAUTH2_CLIENT_ID"
+
+  # Downstream service configuration
+  DOWNSTREAM_SERVICE_1_HOST: "downstream-service-1.example.com"
+  DOWNSTREAM_SERVICE_1_PORT: "443"
+  DOWNSTREAM_SERVICE_2_HOST: "downstream-service-2.example.com"
+  DOWNSTREAM_SERVICE_2_PORT: "443"
+  DOWNSTREAM_API_SCOPE: "api://downstream-service/.default"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: envoy-secrets
+  namespace: demo-app
+type: Opaque
+data:
+  # Base64 encoded OAuth2 client secret
+  # Replace with: echo -n "YOUR_CLIENT_SECRET" | base64
+  oauth2_client_secret: WU9VUl9DTElFTlRfU0VDUkVU
